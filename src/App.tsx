@@ -30,18 +30,20 @@ const customStyles = {
 const APP_KEY = "react-hooks-tutorial"
 
 const App = () => {
+  // Local Storageからデータを読み込む
+  const storedBooks = JSON.parse(localStorage.getItem(APP_KEY) || "[]");
   // 書籍のリストを状態管理
-  const [books, setBooks] = useState([] as BookToRead[]);
+  const [books, setBooks] = useState<BookToRead[]>(storedBooks);
   // モーダルダイアログが開いているかどうかのステートで、最初は閉じていて欲しいので初期値はfalseにする
   const [modalIsOpen, setModalIsOpen] = useState(false);
 
-  // 下記の処理は初回のレンダリングだけで良いので、[]を記入
-  useEffect(() => {
-    const storeBooks = localStorage.getItem(APP_KEY);
-    if(storeBooks) {
-      setBooks(JSON.parse(storeBooks));
-    }
-  }, [])
+  // // 下記の処理は初回のレンダリングだけで良いので、[]を記入
+  // useEffect(() => {
+  //   const storeBooks = localStorage.getItem(APP_KEY);
+  //   if(storeBooks) {
+  //     setBooks(JSON.parse(storeBooks));
+  //   }
+  // }, [])
 
   // LocalStorageの読み書きようなコンポーネント内で閉じない処理は副作用としてuseEffect関数を用いる
   useEffect(() => {
@@ -63,7 +65,7 @@ const App = () => {
       />
     )
   })
-  
+
   const handleBookMemoChange = (id: number, memo: string) => {
     const newBooks = books.map((b) => {
       return b.id === id
@@ -93,7 +95,7 @@ const App = () => {
       setModalIsOpen(false);
     }
 
-  
+
 return (
   <div className="App">
     <section className="nav">
